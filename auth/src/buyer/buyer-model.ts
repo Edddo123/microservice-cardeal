@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-interface BuyerInterface {
+export interface BuyerInterface {
+  _id: string;
   email: string;
   password: string;
   personalId: number;
