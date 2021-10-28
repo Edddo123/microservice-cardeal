@@ -1,10 +1,16 @@
 import mongoose from "mongoose";
 
+export enum BuyerState {
+  Active = "active",
+  Banned = "banned",
+}
+
 export interface BuyerInterface {
   _id: string;
   email: string;
   password: string;
   personalId: number;
+  state: BuyerState;
   createdAt: string;
   updatedAt: string;
 }
@@ -22,6 +28,10 @@ const buyerSchema = new mongoose.Schema<BuyerInterface>(
     },
     personalId: {
       type: Number,
+      required: true,
+    },
+    state: {
+      type: String,
       required: true,
     },
   },

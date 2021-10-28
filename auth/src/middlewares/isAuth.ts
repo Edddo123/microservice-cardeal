@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-interface UserPayload {
+export interface UserPayload {
   email: string;
   id: string;
   signedUp: string

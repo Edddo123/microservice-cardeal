@@ -1,19 +1,21 @@
 import { RequestHandler } from "express";
-import { Buyer } from "./buyer-model";
+import { Buyer, BuyerState } from "./buyer-model";
 import {
   comparePwd,
   existingUser,
   generateJwtBuyer,
   hashPwd,
 } from "./buyer-utils";
+import jwt from "jsonwebtoken";
+import { UserPayload } from "../middlewares/isAuth";
 
 export const signupBuyer: RequestHandler = async (req, res) => {
   const { email, password, personalId } = req.body;
 
   const duplicateEmail = await existingUser(email);
-  if (duplicateEmail) {
-    throw new Error("email already exists");
-  }
+  // if (duplicateEmail) {
+  //   throw new Error("email already exists");
+  // }
 
   const hashedPassword = await hashPwd(password);
 
@@ -21,6 +23,7 @@ export const signupBuyer: RequestHandler = async (req, res) => {
     email,
     password: hashedPassword,
     personalId,
+    state: BuyerState.Active,
   });
 
   await buyer.save();
@@ -62,4 +65,24 @@ export const getBuyer: RequestHandler = async (req, res) => {
   res.status(200).json({
     buyer,
   });
+};
+
+export const refreshTokenBuyer: RequestHandler = async (req, res) => {
+  const { refreshToken } = req.body;
+  const payload = jwt.verify(refreshToken, "my refresh") as UserPayload;
+
+  const user = await existingUser(payload.email);
+  if (!user) {
+    throw new Error("User does not exist");
+  }
+
+  if (user.state == BuyerState.Banned) {
+    throw new Error("User is banned");
+  }
+  const { accessToken } = generateJwtBuyer(user);
+  req.session = {
+    accessToken: accessToken,
+  };
+
+  res.status(200).json(user);
 };
