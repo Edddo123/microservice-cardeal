@@ -1,13 +1,13 @@
 import { RequestHandler } from "express";
-import { Buyer, BuyerState } from "./buyer-model";
+import { Buyer, BuyerState, UserPrivilage } from "../buyer-model";
 import {
   comparePwd,
   existingUser,
   generateJwtBuyer,
   hashPwd,
-} from "./buyer-utils";
+} from "../utils/buyer-utils";
 import jwt from "jsonwebtoken";
-import { UserPayload } from "../middlewares/isAuth";
+import { UserPayload } from "../../middlewares/isAuth";
 
 export const signupBuyer: RequestHandler = async (req, res) => {
   const { email, password, personalId } = req.body;
@@ -24,6 +24,7 @@ export const signupBuyer: RequestHandler = async (req, res) => {
     password: hashedPassword,
     personalId,
     state: BuyerState.Active,
+    privilage: UserPrivilage.Standard,
   });
 
   await buyer.save();
@@ -42,6 +43,10 @@ export const loginBuyer: RequestHandler = async (req, res) => {
   const correctPwd = await comparePwd(password, user.password);
   if (!correctPwd) {
     throw new Error("wrong password");
+  }
+
+  if (user.state == BuyerState.Banned) {
+    throw new Error("Banned user");
   }
 
   const { accessToken, refreshToken } = generateJwtBuyer(user);

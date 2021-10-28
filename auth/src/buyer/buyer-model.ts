@@ -5,12 +5,18 @@ export enum BuyerState {
   Banned = "banned",
 }
 
+export enum UserPrivilage {
+  Standard = "standard",
+  Admin = "admin",
+}
+
 export interface BuyerInterface {
   _id: string;
   email: string;
   password: string;
   personalId: number;
   state: BuyerState;
+  privilage: UserPrivilage;
   createdAt: string;
   updatedAt: string;
 }
@@ -34,6 +40,10 @@ const buyerSchema = new mongoose.Schema<BuyerInterface>(
       type: String,
       required: true,
     },
+    privilage: {
+      type: String,
+      required: true
+    }
   },
   {
     timestamps: true,

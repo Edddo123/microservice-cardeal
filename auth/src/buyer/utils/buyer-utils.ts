@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
-import { Buyer } from "./buyer-model";
+import { Buyer } from "../buyer-model";
 import jwt from "jsonwebtoken";
-import { BuyerInterface } from "./buyer-model";
+import { BuyerInterface } from "../buyer-model";
 
 export const hashPwd = async (password: string) => {
   const hashedPassword = await bcrypt.hash(password, 12);

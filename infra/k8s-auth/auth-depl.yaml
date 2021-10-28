@@ -18,6 +18,8 @@ spec:
         env:
           - name: MONGO_URI
             value: "mongodb://auth-mongo-srv/auth"
+          - name: REDIS_HOST
+            value: redis://auth-redis-srv:6379
         # resources:
         #   requests:
         #     memory: "128Mi"
