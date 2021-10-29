@@ -1,6 +1,6 @@
-import { app } from "../../app";
+import { app } from "../../../app";
 import request from "supertest";
-import { Buyer } from "../buyer-model";
+import { Buyer } from "../../buyer-model";
 
 describe("When signing up", () => {
   it("throws error for duplicate emails", async () => {

@@ -61,6 +61,6 @@ export const isAdminAuth: RequestHandler = async (req, res, next) => {
     req.currentUser = payload;
     return next();
   } catch (err) {
-    throw new Error("Not authorzied2");
+    throw new Error("Not authorized");
   }
 };
