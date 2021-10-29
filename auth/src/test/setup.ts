@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 
 let mongo: MongoMemoryServer;
 
+jest.mock("../buyer/utils/redis-utils.ts");
+
 beforeAll(async () => {
 //   process.env.JWT_KEY = "12";
   mongo = new MongoMemoryServer();
