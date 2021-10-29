@@ -13,9 +13,9 @@ export const signupBuyer: RequestHandler = async (req, res) => {
   const { email, password, personalId } = req.body;
 
   const duplicateEmail = await existingUser(email);
-  // if (duplicateEmail) {
-  //   throw new Error("email already exists");
-  // }
+  if (duplicateEmail) {
+    throw new Error("email already exists");
+  }
 
   const hashedPassword = await hashPwd(password);
 
