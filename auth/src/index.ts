@@ -1,7 +1,6 @@
 import { app } from "./app";
 import mongoose from "mongoose";
 import { redisWrapper } from "./redisWrapper";
-import redis from "redis";
 
 const start = async () => {
   if (!process.env.MONGO_URI) {

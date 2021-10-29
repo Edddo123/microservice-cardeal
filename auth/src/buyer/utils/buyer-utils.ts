@@ -8,7 +8,7 @@ export const hashPwd = async (password: string) => {
 
   return hashedPassword;
 };
-
+ 
 export const existingUser = async (email: string) => {
   const buyer = await Buyer.findOne({ email });
   return buyer;

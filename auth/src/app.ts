@@ -14,13 +14,12 @@ app.use(
   })
 );
 
-
 app.use("/api", buyerRoutes);
 app.use("/admin", buyerAdminRoutes);
 
 app.use((err: any, req: any, res: any, next: any): any => {
   console.log(err);
-  res.send(err?.message);
+  res.status(400).send(err?.message);
 });
 
 export { app };
