@@ -1,13 +1,13 @@
 import { MongoMemoryServer } from "mongodb-memory-server"; // we will use mongo in memory server to quickly access it for tests
 import mongoose from "mongoose";
 
+
+
 let mongo: MongoMemoryServer;
 
-jest.mock("../buyer/utils/redis-utils.ts");
-jest.mock("../natsWrapper.ts");
 
 beforeAll(async () => {
-  //   process.env.JWT_KEY = "12";
+//   process.env.JWT_KEY = "12";
   mongo = new MongoMemoryServer();
   const mongoUri = await mongo.getUri();
   await mongoose.connect(mongoUri);

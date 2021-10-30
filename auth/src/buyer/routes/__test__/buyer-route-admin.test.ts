@@ -11,18 +11,18 @@ describe("When banning user", () => {
     const personalId = "12";
 
     await request(app)
-      .post("/api/buyer")
+      .post("/api/user/buyer")
       .send({ email, password, personalId })
       .expect(201);
 
     const response = await request(app)
-      .post("/api/buyer/login")
+      .post("/api/user/buyer/login")
       .send({ email, password })
       .expect(200);
     const cookie = response.get("Set-Cookie");
 
     const banResponse = await request(app)
-      .put("/admin/buyer/ban")
+      .put("/admin/user/buyer/ban")
       .set("Cookie", cookie)
       .send({ buyerId: "asda" })
       .expect(400);
@@ -54,13 +54,13 @@ describe("When banning user", () => {
     await normalUser.save();
 
     const response = await request(app)
-      .post("/api/buyer/login")
+      .post("/api/user/buyer/login")
       .send({ email, password })
       .expect(200);
     const cookie = response.get("Set-Cookie");
 
     await request(app)
-      .put("/admin/buyer/ban")
+      .put("/admin/user/buyer/ban")
       .set("Cookie", cookie)
       .send({ buyerId: normalUser._id })
       .expect(200);
@@ -78,18 +78,18 @@ describe("When unbanning user", () => {
     const personalId = "12";
 
     await request(app)
-      .post("/api/buyer")
+      .post("/api/user/buyer")
       .send({ email, password, personalId })
       .expect(201);
 
     const response = await request(app)
-      .post("/api/buyer/login")
+      .post("/api/user/buyer/login")
       .send({ email, password })
       .expect(200);
     const cookie = response.get("Set-Cookie");
 
     const banResponse = await request(app)
-      .put("/admin/buyer/unban")
+      .put("/admin/user/buyer/unban")
       .set("Cookie", cookie)
       .send({ buyerId: "asda" })
       .expect(400);
@@ -121,13 +121,13 @@ describe("When unbanning user", () => {
     await normalUser.save();
 
     const response = await request(app)
-      .post("/api/buyer/login")
+      .post("/api/user/buyer/login")
       .send({ email, password })
       .expect(200);
     const cookie = response.get("Set-Cookie");
 
     await request(app)
-      .put("/admin/buyer/ban")
+      .put("/admin/user/buyer/ban")
       .set("Cookie", cookie)
       .send({ buyerId: normalUser._id })
       .expect(200);
@@ -136,7 +136,7 @@ describe("When unbanning user", () => {
     expect(bannedUser?.state).toBe(BuyerState.Banned);
 
     await request(app)
-      .put("/admin/buyer/unban")
+      .put("/admin/user/buyer/unban")
       .set("Cookie", cookie)
       .send({ buyerId: normalUser._id })
       .expect(200);

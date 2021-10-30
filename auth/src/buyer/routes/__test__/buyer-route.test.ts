@@ -8,12 +8,12 @@ describe("When signing up", () => {
     const password = "1234";
     const personalId = "12";
     await request(app)
-      .post("/api/buyer")
+      .post("/api/user/buyer")
       .send({ email, password, personalId })
       .expect(201);
 
     const response = await request(app)
-      .post("/api/buyer")
+      .post("/api/user/buyer")
       .send({ email, password, personalId })
       .expect(400);
 
@@ -25,7 +25,7 @@ describe("When signing up", () => {
     const password = "1234";
     const personalId = "12";
     const response = await request(app)
-      .post("/api/buyer")
+      .post("/api/user/buyer")
       .send({ email, password, personalId })
       .expect(201);
 
@@ -40,7 +40,7 @@ describe("When logging in", () => {
     const email = "test1@mail.ru";
     const password = "1234";
     await request(app)
-      .post("/api/buyer/login")
+      .post("/api/user/buyer/login")
       .send({ email, password })
       .expect(400);
   });
@@ -51,12 +51,12 @@ describe("When logging in", () => {
     const personalId = "12";
 
     await request(app)
-      .post("/api/buyer")
+      .post("/api/user/buyer")
       .send({ email, password, personalId })
       .expect(201);
 
     const response = await request(app)
-      .post("/api/buyer/login")
+      .post("/api/user/buyer/login")
       .send({ email, password })
       .expect(200);
     expect(response.get("Set-Cookie")).toBeDefined();
@@ -65,7 +65,7 @@ describe("When logging in", () => {
 
 describe("When getting buyer", () => {
   it("returns unauthrozied without cookie", async () => {
-    await request(app).get("/api/buyer").send().expect(400);
+    await request(app).get("/api/user/buyer").send().expect(400);
   });
 
   it("returns profile", async () => {
@@ -74,17 +74,17 @@ describe("When getting buyer", () => {
     const personalId = "12";
 
     await request(app)
-      .post("/api/buyer")
+      .post("/api/user/buyer")
       .send({ email, password, personalId })
       .expect(201);
 
     const response = await request(app)
-      .post("/api/buyer/login")
+      .post("/api/user/buyer/login")
       .send({ email, password })
       .expect(200);
     const cookie = response.get("Set-Cookie");
     const buyer = await request(app)
-      .get("/api/buyer")
+      .get("/api/user/buyer")
       .set("Cookie", cookie)
       .send()
       .expect(200);
