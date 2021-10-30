@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import { Buyer, UserPrivilage } from "../buyer/buyer-model";
-// import { getDataRedis } from "../buyer/utils/redis-utils";
+import { getDataRedis } from "../utils/redis-utils";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -29,10 +29,10 @@ export const isAuth: RequestHandler = async (req, res, next) => {
       "my secret"
     ) as UserPayload;
 
-    // const banned = await getDataRedis()(payload.id);
-    // if (banned) {
-    //   throw new Error("user banned");
-    // }
+    const banned = await getDataRedis()(payload.id);
+    if (banned) {
+      throw new Error("user banned");
+    }
 
     req.currentUser = payload;
     return next();

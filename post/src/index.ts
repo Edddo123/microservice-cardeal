@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import { redisWrapper } from "./redisWrapper";
 import { natsWrapper } from "./natsWrapper";
 import { BuyerCreatedListener } from "./buyer/events/buyer-created-listener";
+import { BuyerBannedListener } from "./buyer/events/buyer-banned-listener";
+import { BuyerUnbannedListener } from "./buyer/events/buyer-unbanned-listener";
 
 const start = async () => {
   if (!process.env.MONGO_URI) {
@@ -35,12 +37,14 @@ const start = async () => {
     process.on("SIGTERM", () => natsWrapper.client.close());
 
     new BuyerCreatedListener(natsWrapper.client).listen();
+    new BuyerBannedListener(natsWrapper.client).listen(); 
+    new BuyerUnbannedListener(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log("connecting to the database");
 
-    redisWrapper.connect(process.env.REDIS_HOST);
-
+    redisWrapper.connect(process.env.REDIS_HOST);  
+ 
     app.listen(3000, () => {
       console.log("running on port 3000");
     });
