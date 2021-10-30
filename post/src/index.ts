@@ -2,6 +2,7 @@ import { app } from "./app";
 import mongoose from "mongoose";
 import { redisWrapper } from "./redisWrapper";
 import { natsWrapper } from "./natsWrapper";
+import { BuyerCreatedListener } from "./buyer/events/buyer-created-listener";
 
 const start = async () => {
   if (!process.env.MONGO_URI) {
@@ -32,6 +33,8 @@ const start = async () => {
     });
     process.on("SIGINT", () => natsWrapper.client.close());
     process.on("SIGTERM", () => natsWrapper.client.close());
+
+    new BuyerCreatedListener(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log("connecting to the database");

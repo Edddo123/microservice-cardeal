@@ -5,6 +5,7 @@ deploy:
     manifests:
       - ./infra/k8s-auth/*
       - ./infra/k8s/*
+      - ./infra/k8s-post/*
 build:
   local:
     push: false
@@ -17,3 +18,11 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .  
+    - image: edddo/cardeal-post
+      context: post
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .

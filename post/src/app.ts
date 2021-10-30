@@ -1,21 +1,8 @@
-import express from "express";
 import "express-async-errors";
-import cookieSession from "cookie-session";
-
-import { buyerRoutes } from "./buyer/routes/buyer-route";
-import { buyerAdminRoutes } from "./buyer/routes/buyer-route-admin";
+import express from "express";
 
 const app = express();
 app.use(express.json());
-app.use(
-  cookieSession({
-    signed: false,
-    secure: false,
-  })
-);
-
-app.use("/api/user", buyerRoutes);
-app.use("/admin/user", buyerAdminRoutes);
 
 app.use((err: any, req: any, res: any, next: any): any => {
   console.log(err);
