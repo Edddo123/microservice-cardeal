@@ -14,8 +14,8 @@ app.use(
   })
 );
 
-app.use("/api", buyerRoutes);
-app.use("/admin", buyerAdminRoutes);
+app.use("/api/user", buyerRoutes);
+app.use("/admin/user", buyerAdminRoutes);
 
 app.use((err: any, req: any, res: any, next: any): any => {
   console.log(err);

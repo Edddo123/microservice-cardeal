@@ -9,7 +9,14 @@ spec:
     - host: ticketing.dev
       http:
         paths:
-          - path: /api/buyer
+          - path: /api/user
+            pathType: Prefix
+            backend:
+              service: 
+                name: auth-srv
+                port:
+                  number: 3000
+          - path: /admin/user
             pathType: Prefix
             backend:
               service: 

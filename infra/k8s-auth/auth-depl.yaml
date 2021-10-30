@@ -20,6 +20,14 @@ spec:
             value: "mongodb://auth-mongo-srv/auth"
           - name: REDIS_HOST
             value: redis://auth-redis-srv:6379
+          - name: NATS_CLIENT_ID
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: NATS_URL
+            value: 'http://nats-srv:4222'
+          - name: NATS_CLUSTER_ID
+            value: cardeal
         # resources:
         #   requests:
         #     memory: "128Mi"

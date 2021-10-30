@@ -8,6 +8,8 @@ import {
 } from "../utils/buyer-utils";
 import jwt from "jsonwebtoken";
 import { UserPayload } from "../../middlewares/isAuth";
+import { BuyerCreatedPublisher } from "../events/publishers/buyer-created-publisher";
+import { natsWrapper } from "../../natsWrapper";
 
 export const signupBuyer: RequestHandler = async (req, res) => {
   const { email, password, personalId } = req.body;
@@ -28,6 +30,14 @@ export const signupBuyer: RequestHandler = async (req, res) => {
   });
 
   await buyer.save();
+
+  new BuyerCreatedPublisher(natsWrapper.client).publish({
+    email: buyer.email,
+    id: buyer._id,
+    personalId: buyer.personalId,
+    privilage: UserPrivilage.Standard,
+    state: BuyerState.Active,
+  }); 
 
   res.status(201).json(buyer);
 };
