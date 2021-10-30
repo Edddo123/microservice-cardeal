@@ -12,7 +12,7 @@ app.use(
     signed: false,
     secure: false,
   })
-);
+); 
 
 app.use("/api/user", buyerRoutes);
 app.use("/admin/user", buyerAdminRoutes);
