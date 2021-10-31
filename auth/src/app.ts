@@ -12,10 +12,14 @@ app.use(
     signed: false,
     secure: false,
   })
-); 
+);
 
 app.use("/api/user", buyerRoutes);
 app.use("/admin/user", buyerAdminRoutes);
+
+app.get("*", (req, res) => {
+  res.json({ message: "success" });
+});
 
 app.use((err: any, req: any, res: any, next: any): any => {
   console.log(err);
